@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WelMac Investment Calculator</title>
+    <title>WelMac Beleggingscalculator</title>
 
     <!-- Google Fonts - WelMac Brand -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -721,19 +721,19 @@
                 </div>
                 <span class="wm-logo-text">WelMac BV</span>
             </div>
-            <h1>Investment Calculator</h1>
-            <p class="wm-subtitle">Explore potential returns from sustainable macadamia farm investments</p>
+            <h1>Beleggingscalculator</h1>
+            <p class="wm-subtitle">Ontdek potentiële rendementen van duurzame macadamia-plantage investeringen</p>
         </header>
 
         <!-- Input Section -->
         <div class="wm-input-section">
             <!-- Controls Card -->
             <div class="wm-card">
-                <h2 class="wm-card-title">Investment Parameters</h2>
+                <h2 class="wm-card-title">Investeringsparameters</h2>
 
                 <!-- Investment Amount -->
                 <div class="wm-form-group">
-                    <label class="wm-label" for="investment-input">Investment Amount</label>
+                    <label class="wm-label" for="investment-input">Investeringsbedrag</label>
                     <div class="wm-input-prefix">
                         <input type="number"
                                id="investment-input"
@@ -742,12 +742,12 @@
                                min="490"
                                step="490">
                     </div>
-                    <small class="wm-helper">Minimum €490 (1 certificate) | €490 per certificate</small>
+                    <small class="wm-helper">Minimum €490 (1 certificaat) | €490 per certificaat</small>
                 </div>
 
                 <!-- Timeframe Slider -->
                 <div class="wm-form-group">
-                    <label class="wm-label">Investment Timeframe</label>
+                    <label class="wm-label">Investeringstermijn</label>
                     <div class="wm-slider-container">
                         <input type="range"
                                id="timeframe-slider"
@@ -757,42 +757,42 @@
                                value="10">
                     </div>
                     <div class="wm-slider-labels">
-                        <span>1 year</span>
-                        <span class="wm-slider-value" id="timeframe-value">10 years</span>
-                        <span>15 years</span>
+                        <span>1 jaar</span>
+                        <span class="wm-slider-value" id="timeframe-value">10 jaar</span>
+                        <span>15 jaar</span>
                     </div>
                 </div>
 
                 <!-- Scenario Selection -->
                 <div class="wm-form-group">
-                    <label class="wm-label">Return Scenario</label>
+                    <label class="wm-label">Rendementscenario</label>
                     <div class="wm-radio-group" id="scenario-group">
                         <label class="wm-radio-option" data-scenario="low">
                             <input type="radio" name="scenario" value="low">
                             <span class="wm-radio-dot"></span>
                             <span class="wm-radio-content">
-                                <span class="wm-radio-label">Conservative</span>
-                                <span class="wm-radio-desc">6.6% annual return</span>
+                                <span class="wm-radio-label">Conservatief</span>
+                                <span class="wm-radio-desc">6,6% jaarlijks rendement</span>
                             </span>
-                            <span class="wm-scenario-badge low">Low</span>
+                            <span class="wm-scenario-badge low">Laag</span>
                         </label>
                         <label class="wm-radio-option active" data-scenario="medium">
                             <input type="radio" name="scenario" value="medium" checked>
                             <span class="wm-radio-dot"></span>
                             <span class="wm-radio-content">
-                                <span class="wm-radio-label">Moderate</span>
-                                <span class="wm-radio-desc">10.5% annual return</span>
+                                <span class="wm-radio-label">Gemiddeld</span>
+                                <span class="wm-radio-desc">10,5% jaarlijks rendement</span>
                             </span>
-                            <span class="wm-scenario-badge medium">Medium</span>
+                            <span class="wm-scenario-badge medium">Gemiddeld</span>
                         </label>
                         <label class="wm-radio-option" data-scenario="high">
                             <input type="radio" name="scenario" value="high">
                             <span class="wm-radio-dot"></span>
                             <span class="wm-radio-content">
-                                <span class="wm-radio-label">Optimistic</span>
-                                <span class="wm-radio-desc">14.5% annual return</span>
+                                <span class="wm-radio-label">Optimistisch</span>
+                                <span class="wm-radio-desc">14,5% jaarlijks rendement</span>
                             </span>
-                            <span class="wm-scenario-badge high">High</span>
+                            <span class="wm-scenario-badge high">Hoog</span>
                         </label>
                     </div>
                 </div>
@@ -804,31 +804,31 @@
                         <span class="wm-toggle-track">
                             <span class="wm-toggle-thumb"></span>
                         </span>
-                        <span class="wm-toggle-label">Reinvest Dividends</span>
+                        <span class="wm-toggle-label">Dividend Herinvesteren</span>
                     </label>
-                    <small class="wm-helper">Dividends expected from year 4 (2027-2028)</small>
+                    <small class="wm-helper">Dividend verwacht vanaf jaar 4 (2027-2028)</small>
                 </div>
             </div>
 
             <!-- Summary Card -->
             <div class="wm-card wm-summary-card">
-                <h2 class="wm-card-title">Projected Results</h2>
+                <h2 class="wm-card-title">Verwachte Resultaten</h2>
                 <div class="wm-summary">
                     <div class="wm-stat wm-stat-highlight">
                         <div class="wm-stat-value" id="final-value">€12,539</div>
-                        <div class="wm-stat-label">Final Value</div>
+                        <div class="wm-stat-label">Eindwaarde</div>
                     </div>
                     <div class="wm-stat">
                         <div class="wm-stat-value" id="total-return">+155.9%</div>
-                        <div class="wm-stat-label">Total Return</div>
+                        <div class="wm-stat-label">Totaal Rendement</div>
                     </div>
                     <div class="wm-stat">
                         <div class="wm-stat-value" id="total-dividends">€5,488</div>
-                        <div class="wm-stat-label">Total Dividends</div>
+                        <div class="wm-stat-label">Totaal Dividend</div>
                     </div>
                     <div class="wm-stat">
                         <div class="wm-stat-value" id="avg-annual">9.8%</div>
-                        <div class="wm-stat-label">Avg Annual Return</div>
+                        <div class="wm-stat-label">Gem. Jaarlijks Rendement</div>
                     </div>
                 </div>
             </div>
@@ -836,56 +836,56 @@
 
         <!-- Line Chart -->
         <div class="wm-card wm-chart-section">
-            <h3 class="wm-card-title">Investment Growth - All Scenarios</h3>
+            <h3 class="wm-card-title">Investeringsgroei - Alle Scenario's</h3>
             <div class="wm-chart-wrapper">
                 <canvas id="line-chart"></canvas>
             </div>
             <div class="wm-chart-legend">
                 <div class="wm-legend-item">
                     <span class="wm-legend-line" style="background: var(--wm-scenario-low);"></span>
-                    <span>Conservative (6.6%)</span>
+                    <span>Conservatief (6,6%)</span>
                 </div>
                 <div class="wm-legend-item">
                     <span class="wm-legend-line" style="background: var(--wm-scenario-medium);"></span>
-                    <span>Moderate (10.5%)</span>
+                    <span>Gemiddeld (10,5%)</span>
                 </div>
                 <div class="wm-legend-item">
                     <span class="wm-legend-line" style="background: var(--wm-scenario-high);"></span>
-                    <span>Optimistic (14.5%)</span>
+                    <span>Optimistisch (14,5%)</span>
                 </div>
             </div>
         </div>
 
         <!-- Bar Chart -->
         <div class="wm-card wm-chart-section">
-            <h3 class="wm-card-title">Year-by-Year Breakdown (Selected Scenario)</h3>
+            <h3 class="wm-card-title">Jaar-voor-Jaar Overzicht (Geselecteerd Scenario)</h3>
             <div class="wm-chart-wrapper">
                 <canvas id="bar-chart"></canvas>
             </div>
             <div class="wm-chart-legend">
                 <div class="wm-legend-item">
                     <span class="wm-legend-dot" style="background: var(--wm-primary);"></span>
-                    <span>Capital Growth</span>
+                    <span>Kapitaalgroei</span>
                 </div>
                 <div class="wm-legend-item">
                     <span class="wm-legend-dot" style="background: var(--wm-accent);"></span>
-                    <span>Dividends</span>
+                    <span>Dividend</span>
                 </div>
             </div>
         </div>
 
         <!-- Comparison Table -->
         <div class="wm-card wm-chart-section">
-            <h3 class="wm-card-title">Scenario Comparison</h3>
+            <h3 class="wm-card-title">Scenariovergelijking</h3>
             <div class="wm-table-container">
                 <table class="wm-table">
                     <thead>
                         <tr>
                             <th>Scenario</th>
-                            <th>Annual Rate</th>
-                            <th>Final Value</th>
-                            <th>Total Return</th>
-                            <th>Total Dividends</th>
+                            <th>Jaarlijks %</th>
+                            <th>Eindwaarde</th>
+                            <th>Totaal Rendement</th>
+                            <th>Totaal Dividend</th>
                         </tr>
                     </thead>
                     <tbody id="comparison-body">
@@ -898,37 +898,38 @@
         <!-- Email Capture Section -->
         <div class="wm-email-section">
             <div class="wm-email-header">
-                <h3>Interested in Investing?</h3>
-                <p>Leave your details and we'll send you more information about WelMac investment opportunities.</p>
+                <h3>Interesse in Investeren?</h3>
+                <p>Laat uw gegevens achter en wij sturen u meer informatie over WelMac investeringsmogelijkheden.</p>
             </div>
             <form class="wm-email-form" id="email-form">
                 <div class="wm-form-group">
-                    <label class="wm-label" for="email-name">Name</label>
-                    <input type="text" id="email-name" class="wm-input" placeholder="Your name" required>
+                    <label class="wm-label" for="email-name">Naam</label>
+                    <input type="text" id="email-name" class="wm-input" placeholder="Uw naam" required>
                 </div>
                 <div class="wm-form-group">
-                    <label class="wm-label" for="email-address">Email</label>
-                    <input type="email" id="email-address" class="wm-input" placeholder="your@email.com" required>
+                    <label class="wm-label" for="email-address">E-mail</label>
+                    <input type="email" id="email-address" class="wm-input" placeholder="uw@email.nl" required>
                 </div>
                 <div class="wm-form-group">
-                    <label class="wm-label" for="email-phone">Phone (optional)</label>
+                    <label class="wm-label" for="email-phone">Telefoon (optioneel)</label>
                     <input type="tel" id="email-phone" class="wm-input" placeholder="+31 6 1234 5678">
                 </div>
-                <button type="submit" class="wm-btn wm-btn-primary">Get Info</button>
+                <button type="submit" class="wm-btn wm-btn-primary">Meer Informatie</button>
             </form>
             <div class="wm-email-success" id="email-success">
-                Thank you for your interest! We'll be in touch soon with more information about WelMac investments.
+                Bedankt voor uw interesse! Wij nemen spoedig contact met u op met meer informatie over WelMac investeringen.
             </div>
         </div>
 
         <!-- Disclaimer -->
         <div class="wm-disclaimer">
-            <strong>Disclaimer:</strong> This calculator provides estimates for illustrative purposes only.
-            Past performance does not guarantee future results. The projected returns are based on historical
-            data and assumptions that may not reflect actual future performance. Investment in agricultural
-            assets involves risk, including possible loss of principal. Dividend payments are not guaranteed
-            and depend on farm performance. Please consult a qualified financial advisor before making
-            investment decisions. WelMac BV certificates are traded on NPEX.
+            <strong>Disclaimer:</strong> Deze calculator biedt schattingen uitsluitend ter illustratie.
+            In het verleden behaalde resultaten bieden geen garantie voor de toekomst. De verwachte rendementen
+            zijn gebaseerd op historische gegevens en aannames die mogelijk niet overeenkomen met toekomstige
+            prestaties. Beleggen in agrarische activa brengt risico's met zich mee, inclusief mogelijk verlies
+            van de hoofdsom. Dividendbetalingen zijn niet gegarandeerd en zijn afhankelijk van de prestaties
+            van de plantage. Raadpleeg een gekwalificeerd financieel adviseur alvorens beleggingsbeslissingen
+            te nemen. WelMac BV certificaten worden verhandeld op NPEX.
         </div>
     </div>
 
@@ -940,9 +941,9 @@
             minInvestment: 490,
             certificateValue: 490,
             scenarios: {
-                low: { rate: 0.066, label: 'Conservative', color: '#8b7355' },
-                medium: { rate: 0.105, label: 'Moderate', color: '#422c07' },
-                high: { rate: 0.145, label: 'Optimistic', color: '#c9a227' }
+                low: { rate: 0.066, label: 'Conservatief', color: '#8b7355' },
+                medium: { rate: 0.105, label: 'Gemiddeld', color: '#422c07' },
+                high: { rate: 0.145, label: 'Optimistisch', color: '#c9a227' }
             },
             dividend: {
                 startYear: 4,
@@ -1100,7 +1101,7 @@
                     labels: [],
                     datasets: [
                         {
-                            label: 'Conservative (6.6%)',
+                            label: 'Conservatief (6,6%)',
                             data: [],
                             borderColor: CONFIG.scenarios.low.color,
                             backgroundColor: 'transparent',
@@ -1111,7 +1112,7 @@
                             pointHoverRadius: 5
                         },
                         {
-                            label: 'Moderate (10.5%)',
+                            label: 'Gemiddeld (10,5%)',
                             data: [],
                             borderColor: CONFIG.scenarios.medium.color,
                             backgroundColor: 'rgba(66, 44, 7, 0.1)',
@@ -1122,7 +1123,7 @@
                             pointHoverRadius: 6
                         },
                         {
-                            label: 'Optimistic (14.5%)',
+                            label: 'Optimistisch (14,5%)',
                             data: [],
                             borderColor: CONFIG.scenarios.high.color,
                             backgroundColor: 'transparent',
@@ -1175,13 +1176,13 @@
                     labels: [],
                     datasets: [
                         {
-                            label: 'Capital Growth',
+                            label: 'Kapitaalgroei',
                             data: [],
                             backgroundColor: '#422c07',
                             borderRadius: 4
                         },
                         {
-                            label: 'Dividends',
+                            label: 'Dividend',
                             data: [],
                             backgroundColor: '#c9a227',
                             borderRadius: 4
@@ -1225,7 +1226,7 @@
 
         function updateCharts(scenarios) {
             const years = state.timeframe;
-            const labels = Array.from({ length: years }, (_, i) => `Year ${i + 1}`);
+            const labels = Array.from({ length: years }, (_, i) => `Jaar ${i + 1}`);
 
             // Update line chart with all scenarios
             lineChart.data.labels = labels;
@@ -1301,7 +1302,7 @@
             timeframeSlider.addEventListener('input', (e) => {
                 const years = parseInt(e.target.value);
                 state.timeframe = years;
-                timeframeValue.textContent = `${years} year${years !== 1 ? 's' : ''}`;
+                timeframeValue.textContent = `${years} jaar`;
                 recalculate();
             });
 
@@ -1343,18 +1344,18 @@
                     state.reinvestDividends
                 );
 
-                const subject = encodeURIComponent('WelMac Investment Inquiry');
+                const subject = encodeURIComponent('WelMac Investeringsaanvraag');
                 const body = encodeURIComponent(
-                    `Name: ${name}\n` +
-                    `Email: ${email}\n` +
-                    `Phone: ${phone || 'Not provided'}\n\n` +
-                    `--- Investment Projection ---\n` +
-                    `Investment Amount: ${formatCurrency(state.investment)}\n` +
-                    `Timeframe: ${state.timeframe} years\n` +
+                    `Naam: ${name}\n` +
+                    `E-mail: ${email}\n` +
+                    `Telefoon: ${phone || 'Niet opgegeven'}\n\n` +
+                    `--- Investeringsprojectie ---\n` +
+                    `Investeringsbedrag: ${formatCurrency(state.investment)}\n` +
+                    `Termijn: ${state.timeframe} jaar\n` +
                     `Scenario: ${CONFIG.scenarios[state.scenario].label}\n` +
-                    `Projected Final Value: ${formatCurrency(selectedProjection.summary.finalValue)}\n` +
-                    `Total Return: ${formatPercent(selectedProjection.summary.totalReturn)}\n` +
-                    `Dividends Reinvested: ${state.reinvestDividends ? 'Yes' : 'No'}\n`
+                    `Verwachte Eindwaarde: ${formatCurrency(selectedProjection.summary.finalValue)}\n` +
+                    `Totaal Rendement: ${formatPercent(selectedProjection.summary.totalReturn)}\n` +
+                    `Dividend Herinvesteren: ${state.reinvestDividends ? 'Ja' : 'Nee'}\n`
                 );
 
                 // Open mailto
@@ -1385,7 +1386,7 @@
                 if (years >= CONFIG.minTimeframe && years <= CONFIG.maxTimeframe) {
                     state.timeframe = years;
                     document.getElementById('timeframe-slider').value = years;
-                    document.getElementById('timeframe-value').textContent = `${years} year${years !== 1 ? 's' : ''}`;
+                    document.getElementById('timeframe-value').textContent = `${years} jaar`;
                 }
             }
 
