@@ -752,14 +752,14 @@ const HTML = `<!DOCTYPE html>
                         <input type="range"
                                id="timeframe-slider"
                                class="wm-slider"
-                               min="1"
-                               max="15"
-                               value="10">
+                               min="5"
+                               max="25"
+                               value="15">
                     </div>
                     <div class="wm-slider-labels">
-                        <span>1 jaar</span>
-                        <span class="wm-slider-value" id="timeframe-value">10 jaar</span>
-                        <span>15 jaar</span>
+                        <span>5 jaar</span>
+                        <span class="wm-slider-value" id="timeframe-value">15 jaar</span>
+                        <span>25 jaar</span>
                     </div>
                 </div>
 
@@ -947,12 +947,13 @@ const HTML = `<!DOCTYPE html>
             },
             dividend: {
                 startYear: 4,
-                yield: 0.16,
-                growthRate: 0.02
+                baseYield: 0.05,
+                maxYield: 0.16,
+                yearsToMaxYield: 12
             },
-            defaultTimeframe: 10,
-            maxTimeframe: 15,
-            minTimeframe: 1
+            defaultTimeframe: 15,
+            maxTimeframe: 25,
+            minTimeframe: 5
         };
 
         // ========================================
@@ -960,7 +961,7 @@ const HTML = `<!DOCTYPE html>
         // ========================================
         const state = {
             investment: 4900,
-            timeframe: 10,
+            timeframe: 15,
             scenario: 'medium',
             reinvestDividends: true
         };
@@ -990,8 +991,10 @@ const HTML = `<!DOCTYPE html>
                 let dividend = 0;
                 if (year >= CONFIG.dividend.startYear) {
                     const yearsOfDividends = year - CONFIG.dividend.startYear;
-                    const dividendRate = CONFIG.dividend.yield *
-                        Math.pow(1 + CONFIG.dividend.growthRate, yearsOfDividends);
+                    // Linear growth from baseYield (5%) to maxYield (16%) over yearsToMaxYield
+                    const growthProgress = Math.min(yearsOfDividends / CONFIG.dividend.yearsToMaxYield, 1);
+                    const dividendRate = CONFIG.dividend.baseYield +
+                        (CONFIG.dividend.maxYield - CONFIG.dividend.baseYield) * growthProgress;
                     dividend = principal * dividendRate;
 
                     if (reinvestDividends) {
@@ -1419,17 +1422,15 @@ const HTML = `<!DOCTYPE html>
         });
     </script>
 </body>
-</html>
-`;
+</html>`;
 
 export default {
-  async fetch(request) {
-    return new Response(HTML, {
-      headers: {
-        'Content-Type': 'text/html;charset=UTF-8',
-        'Access-Control-Allow-Origin': '*',
-        'Cache-Control': 'public, max-age=3600',
-      },
-    });
-  },
+    async fetch(request, env, ctx) {
+        return new Response(HTML, {
+            headers: {
+                'Content-Type': 'text/html;charset=UTF-8',
+                'Cache-Control': 'public, max-age=3600'
+            }
+        });
+    }
 };
