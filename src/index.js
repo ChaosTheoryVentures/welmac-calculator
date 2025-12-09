@@ -1,0 +1,1434 @@
+const HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WelMac Investment Calculator</title>
+
+    <!-- Google Fonts - WelMac Brand -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kreon:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* ========================================
+           CSS Custom Properties
+           ======================================== */
+        :root {
+            /* WelMac Brand Colors - From welmac.nl */
+            --wm-primary: #422c07;        /* Deep brown */
+            --wm-primary-light: #5a3d0a;  /* Lighter brown */
+            --wm-secondary: #8b7355;      /* Earthy brown (macadamia) */
+            --wm-accent: #c8b7a8;         /* Warm taupe */
+            --wm-gold: #c9a227;           /* Gold/harvest - logo color */
+            --wm-success: #5a7c3d;        /* Muted green */
+
+            /* Neutrals */
+            --wm-dark: #422c07;
+            --wm-text: #422c07;
+            --wm-text-light: #6b5a4a;
+            --wm-white: #ffffff;
+            --wm-gray-50: #faf9f7;
+            --wm-gray-100: #f5f3f0;
+            --wm-gray-200: #e8e4df;
+            --wm-gray-300: #d4cfc8;
+            --wm-gray-500: #8b8178;
+
+            /* Scenario Colors */
+            --wm-scenario-low: #8b7355;
+            --wm-scenario-medium: #422c07;
+            --wm-scenario-high: #c9a227;
+
+            /* Typography */
+            --wm-font-heading: 'Kreon', Georgia, serif;
+            --wm-font: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+            /* Spacing & Sizing */
+            --wm-radius-sm: 6px;
+            --wm-radius-md: 10px;
+            --wm-radius-lg: 14px;
+
+            /* Shadows */
+            --wm-shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --wm-shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --wm-shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+
+            /* Transitions */
+            --wm-transition: all 0.2s ease;
+        }
+
+        /* ========================================
+           Reset & Base
+           ======================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--wm-font);
+            color: var(--wm-text);
+            background: var(--wm-gray-50);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ========================================
+           Main Container
+           ======================================== */
+        .wm-calculator {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 24px;
+            background: var(--wm-white);
+            min-height: 100vh;
+        }
+
+        /* ========================================
+           Header
+           ======================================== */
+        .wm-header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding: 24px;
+            background: var(--wm-primary);
+            border-radius: var(--wm-radius-lg);
+            color: var(--wm-white);
+        }
+
+        .wm-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .wm-logo-icon {
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wm-css-logo {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 5px solid var(--wm-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wm-css-logo-inner1 {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 5px solid var(--wm-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wm-css-logo-inner2 {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 5px solid var(--wm-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wm-css-logo-center {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--wm-gold);
+        }
+
+        .wm-logo-text {
+            font-family: var(--wm-font-heading);
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--wm-white);
+            letter-spacing: 0.5px;
+        }
+
+        .wm-header h1 {
+            font-family: var(--wm-font-heading);
+            font-size: 1.35rem;
+            font-weight: 500;
+            color: var(--wm-accent);
+            margin-bottom: 8px;
+        }
+
+        .wm-subtitle {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.75);
+        }
+
+        /* ========================================
+           Cards
+           ======================================== */
+        .wm-card {
+            background: var(--wm-white);
+            border: 1px solid var(--wm-gray-200);
+            border-radius: var(--wm-radius-lg);
+            padding: 20px;
+            box-shadow: var(--wm-shadow-sm);
+        }
+
+        .wm-card-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--wm-text-light);
+            margin-bottom: 16px;
+        }
+
+        /* ========================================
+           Input Section - Grid Layout
+           ======================================== */
+        .wm-input-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        @media (max-width: 768px) {
+            .wm-input-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ========================================
+           Form Controls
+           ======================================== */
+        .wm-form-group {
+            margin-bottom: 20px;
+        }
+
+        .wm-form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .wm-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--wm-text);
+            margin-bottom: 8px;
+        }
+
+        .wm-input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 1rem;
+            font-family: var(--wm-font);
+            border: 1px solid var(--wm-gray-300);
+            border-radius: var(--wm-radius-md);
+            transition: var(--wm-transition);
+            background: var(--wm-white);
+        }
+
+        .wm-input:focus {
+            outline: none;
+            border-color: var(--wm-primary);
+            box-shadow: 0 0 0 3px rgba(66, 44, 7, 0.15);
+        }
+
+        .wm-input-prefix {
+            position: relative;
+        }
+
+        .wm-input-prefix .wm-input {
+            padding-left: 32px;
+        }
+
+        .wm-input-prefix::before {
+            content: '€';
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--wm-text-light);
+            font-weight: 500;
+        }
+
+        .wm-helper {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--wm-gray-500);
+            margin-top: 6px;
+        }
+
+        /* ========================================
+           Range Slider
+           ======================================== */
+        .wm-slider-container {
+            padding: 8px 0;
+        }
+
+        .wm-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--wm-gray-200);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .wm-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--wm-primary);
+            cursor: pointer;
+            box-shadow: var(--wm-shadow-md);
+            transition: var(--wm-transition);
+        }
+
+        .wm-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        .wm-slider::-moz-range-thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--wm-primary);
+            cursor: pointer;
+            border: none;
+            box-shadow: var(--wm-shadow-md);
+        }
+
+        .wm-slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: var(--wm-gray-500);
+        }
+
+        .wm-slider-value {
+            font-weight: 600;
+            color: var(--wm-primary);
+            font-size: 0.875rem;
+        }
+
+        /* ========================================
+           Radio Button Group (Scenario Selection)
+           ======================================== */
+        .wm-radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .wm-radio-option {
+            display: flex;
+            align-items: center;
+            padding: 12px 14px;
+            border: 2px solid var(--wm-gray-200);
+            border-radius: var(--wm-radius-md);
+            cursor: pointer;
+            transition: var(--wm-transition);
+            position: relative;
+        }
+
+        .wm-radio-option:hover {
+            border-color: var(--wm-gray-300);
+            background: var(--wm-gray-50);
+        }
+
+        .wm-radio-option input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .wm-radio-option.active {
+            border-color: var(--wm-primary);
+            background: rgba(66, 44, 7, 0.05);
+        }
+
+        .wm-radio-dot {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--wm-gray-300);
+            border-radius: 50%;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--wm-transition);
+        }
+
+        .wm-radio-option.active .wm-radio-dot {
+            border-color: var(--wm-primary);
+        }
+
+        .wm-radio-dot::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--wm-primary);
+            transform: scale(0);
+            transition: var(--wm-transition);
+        }
+
+        .wm-radio-option.active .wm-radio-dot::after {
+            transform: scale(1);
+        }
+
+        .wm-radio-content {
+            flex: 1;
+        }
+
+        .wm-radio-label {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .wm-radio-desc {
+            font-size: 0.75rem;
+            color: var(--wm-gray-500);
+        }
+
+        .wm-scenario-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .wm-scenario-badge.low { background: var(--wm-gray-100); color: var(--wm-scenario-low); }
+        .wm-scenario-badge.medium { background: rgba(66, 44, 7, 0.1); color: var(--wm-scenario-medium); }
+        .wm-scenario-badge.high { background: rgba(201, 162, 39, 0.15); color: #8b7317; }
+
+        /* ========================================
+           Toggle Switch
+           ======================================== */
+        .wm-toggle {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .wm-toggle input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .wm-toggle-track {
+            width: 44px;
+            height: 24px;
+            background: var(--wm-gray-300);
+            border-radius: 12px;
+            margin-right: 12px;
+            position: relative;
+            transition: var(--wm-transition);
+        }
+
+        .wm-toggle input:checked + .wm-toggle-track {
+            background: var(--wm-success);
+        }
+
+        .wm-toggle-thumb {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: var(--wm-transition);
+            box-shadow: var(--wm-shadow-sm);
+        }
+
+        .wm-toggle input:checked + .wm-toggle-track .wm-toggle-thumb {
+            transform: translateX(20px);
+        }
+
+        .wm-toggle-label {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        /* ========================================
+           Summary Stats
+           ======================================== */
+        .wm-summary-card {
+            background: linear-gradient(135deg, var(--wm-primary) 0%, var(--wm-primary-light) 100%);
+            color: white;
+            border: none;
+        }
+
+        .wm-summary-card .wm-card-title {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .wm-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .wm-stat {
+            text-align: center;
+            padding: 16px 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: var(--wm-radius-md);
+        }
+
+        .wm-stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .wm-stat-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.85;
+        }
+
+        .wm-stat-highlight {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* ========================================
+           Charts
+           ======================================== */
+        .wm-chart-section {
+            margin-bottom: 24px;
+        }
+
+        .wm-chart-wrapper {
+            position: relative;
+            height: 300px;
+        }
+
+        .wm-chart-legend {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .wm-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: var(--wm-text-light);
+        }
+
+        .wm-legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .wm-legend-line {
+            width: 24px;
+            height: 3px;
+            border-radius: 2px;
+        }
+
+        /* ========================================
+           Comparison Table
+           ======================================== */
+        .wm-table-container {
+            overflow-x: auto;
+        }
+
+        .wm-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        .wm-table th,
+        .wm-table td {
+            padding: 14px 16px;
+            text-align: left;
+        }
+
+        .wm-table th {
+            font-weight: 600;
+            color: var(--wm-text-light);
+            background: var(--wm-gray-50);
+            border-bottom: 2px solid var(--wm-gray-200);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .wm-table td {
+            border-bottom: 1px solid var(--wm-gray-100);
+        }
+
+        .wm-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .wm-table tr.active {
+            background: rgba(66, 44, 7, 0.05);
+        }
+
+        .wm-table tr.active td:first-child {
+            font-weight: 600;
+            color: var(--wm-primary);
+        }
+
+        .wm-table .value-positive {
+            color: var(--wm-success);
+            font-weight: 600;
+        }
+
+        /* ========================================
+           Email Capture
+           ======================================== */
+        .wm-email-section {
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 1px solid var(--wm-gray-200);
+        }
+
+        .wm-email-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .wm-email-header h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--wm-text);
+            margin-bottom: 6px;
+        }
+
+        .wm-email-header p {
+            font-size: 0.875rem;
+            color: var(--wm-text-light);
+        }
+
+        .wm-email-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        @media (max-width: 768px) {
+            .wm-email-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .wm-email-form .wm-form-group {
+            margin-bottom: 0;
+        }
+
+        .wm-btn {
+            padding: 12px 24px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: var(--wm-font);
+            border: none;
+            border-radius: var(--wm-radius-md);
+            cursor: pointer;
+            transition: var(--wm-transition);
+        }
+
+        .wm-btn-primary {
+            background: var(--wm-primary);
+            color: white;
+        }
+
+        .wm-btn-primary:hover {
+            background: var(--wm-primary-light);
+        }
+
+        .wm-email-success {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: rgba(66, 44, 7, 0.08);
+            border-radius: var(--wm-radius-md);
+            color: var(--wm-primary);
+        }
+
+        .wm-email-success.show {
+            display: block;
+        }
+
+        /* ========================================
+           Disclaimer
+           ======================================== */
+        .wm-disclaimer {
+            margin-top: 32px;
+            padding: 20px;
+            background: var(--wm-gray-50);
+            border-radius: var(--wm-radius-md);
+            font-size: 0.75rem;
+            color: var(--wm-gray-500);
+            line-height: 1.6;
+        }
+
+        .wm-disclaimer strong {
+            color: var(--wm-text-light);
+        }
+
+        /* ========================================
+           Utilities
+           ======================================== */
+        .text-center { text-align: center; }
+        .mb-0 { margin-bottom: 0; }
+    </style>
+</head>
+<body>
+    <div class="wm-calculator">
+        <!-- Header -->
+        <header class="wm-header">
+            <div class="wm-logo">
+                <div class="wm-logo-icon">
+                    <div class="wm-css-logo">
+                        <div class="wm-css-logo-inner1">
+                            <div class="wm-css-logo-inner2">
+                                <div class="wm-css-logo-center"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <span class="wm-logo-text">WelMac BV</span>
+            </div>
+            <h1>Investment Calculator</h1>
+            <p class="wm-subtitle">Explore potential returns from sustainable macadamia farm investments</p>
+        </header>
+
+        <!-- Input Section -->
+        <div class="wm-input-section">
+            <!-- Controls Card -->
+            <div class="wm-card">
+                <h2 class="wm-card-title">Investment Parameters</h2>
+
+                <!-- Investment Amount -->
+                <div class="wm-form-group">
+                    <label class="wm-label" for="investment-input">Investment Amount</label>
+                    <div class="wm-input-prefix">
+                        <input type="number"
+                               id="investment-input"
+                               class="wm-input"
+                               value="4900"
+                               min="490"
+                               step="490">
+                    </div>
+                    <small class="wm-helper">Minimum €490 (1 certificate) | €490 per certificate</small>
+                </div>
+
+                <!-- Timeframe Slider -->
+                <div class="wm-form-group">
+                    <label class="wm-label">Investment Timeframe</label>
+                    <div class="wm-slider-container">
+                        <input type="range"
+                               id="timeframe-slider"
+                               class="wm-slider"
+                               min="1"
+                               max="15"
+                               value="10">
+                    </div>
+                    <div class="wm-slider-labels">
+                        <span>1 year</span>
+                        <span class="wm-slider-value" id="timeframe-value">10 years</span>
+                        <span>15 years</span>
+                    </div>
+                </div>
+
+                <!-- Scenario Selection -->
+                <div class="wm-form-group">
+                    <label class="wm-label">Return Scenario</label>
+                    <div class="wm-radio-group" id="scenario-group">
+                        <label class="wm-radio-option" data-scenario="low">
+                            <input type="radio" name="scenario" value="low">
+                            <span class="wm-radio-dot"></span>
+                            <span class="wm-radio-content">
+                                <span class="wm-radio-label">Conservative</span>
+                                <span class="wm-radio-desc">6.6% annual return</span>
+                            </span>
+                            <span class="wm-scenario-badge low">Low</span>
+                        </label>
+                        <label class="wm-radio-option active" data-scenario="medium">
+                            <input type="radio" name="scenario" value="medium" checked>
+                            <span class="wm-radio-dot"></span>
+                            <span class="wm-radio-content">
+                                <span class="wm-radio-label">Moderate</span>
+                                <span class="wm-radio-desc">10.5% annual return</span>
+                            </span>
+                            <span class="wm-scenario-badge medium">Medium</span>
+                        </label>
+                        <label class="wm-radio-option" data-scenario="high">
+                            <input type="radio" name="scenario" value="high">
+                            <span class="wm-radio-dot"></span>
+                            <span class="wm-radio-content">
+                                <span class="wm-radio-label">Optimistic</span>
+                                <span class="wm-radio-desc">14.5% annual return</span>
+                            </span>
+                            <span class="wm-scenario-badge high">High</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Dividend Reinvestment Toggle -->
+                <div class="wm-form-group mb-0">
+                    <label class="wm-toggle">
+                        <input type="checkbox" id="reinvest-toggle" checked>
+                        <span class="wm-toggle-track">
+                            <span class="wm-toggle-thumb"></span>
+                        </span>
+                        <span class="wm-toggle-label">Reinvest Dividends</span>
+                    </label>
+                    <small class="wm-helper">Dividends expected from year 4 (2027-2028)</small>
+                </div>
+            </div>
+
+            <!-- Summary Card -->
+            <div class="wm-card wm-summary-card">
+                <h2 class="wm-card-title">Projected Results</h2>
+                <div class="wm-summary">
+                    <div class="wm-stat wm-stat-highlight">
+                        <div class="wm-stat-value" id="final-value">€12,539</div>
+                        <div class="wm-stat-label">Final Value</div>
+                    </div>
+                    <div class="wm-stat">
+                        <div class="wm-stat-value" id="total-return">+155.9%</div>
+                        <div class="wm-stat-label">Total Return</div>
+                    </div>
+                    <div class="wm-stat">
+                        <div class="wm-stat-value" id="total-dividends">€5,488</div>
+                        <div class="wm-stat-label">Total Dividends</div>
+                    </div>
+                    <div class="wm-stat">
+                        <div class="wm-stat-value" id="avg-annual">9.8%</div>
+                        <div class="wm-stat-label">Avg Annual Return</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Line Chart -->
+        <div class="wm-card wm-chart-section">
+            <h3 class="wm-card-title">Investment Growth - All Scenarios</h3>
+            <div class="wm-chart-wrapper">
+                <canvas id="line-chart"></canvas>
+            </div>
+            <div class="wm-chart-legend">
+                <div class="wm-legend-item">
+                    <span class="wm-legend-line" style="background: var(--wm-scenario-low);"></span>
+                    <span>Conservative (6.6%)</span>
+                </div>
+                <div class="wm-legend-item">
+                    <span class="wm-legend-line" style="background: var(--wm-scenario-medium);"></span>
+                    <span>Moderate (10.5%)</span>
+                </div>
+                <div class="wm-legend-item">
+                    <span class="wm-legend-line" style="background: var(--wm-scenario-high);"></span>
+                    <span>Optimistic (14.5%)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bar Chart -->
+        <div class="wm-card wm-chart-section">
+            <h3 class="wm-card-title">Year-by-Year Breakdown (Selected Scenario)</h3>
+            <div class="wm-chart-wrapper">
+                <canvas id="bar-chart"></canvas>
+            </div>
+            <div class="wm-chart-legend">
+                <div class="wm-legend-item">
+                    <span class="wm-legend-dot" style="background: var(--wm-primary);"></span>
+                    <span>Capital Growth</span>
+                </div>
+                <div class="wm-legend-item">
+                    <span class="wm-legend-dot" style="background: var(--wm-accent);"></span>
+                    <span>Dividends</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="wm-card wm-chart-section">
+            <h3 class="wm-card-title">Scenario Comparison</h3>
+            <div class="wm-table-container">
+                <table class="wm-table">
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Annual Rate</th>
+                            <th>Final Value</th>
+                            <th>Total Return</th>
+                            <th>Total Dividends</th>
+                        </tr>
+                    </thead>
+                    <tbody id="comparison-body">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Email Capture Section -->
+        <div class="wm-email-section">
+            <div class="wm-email-header">
+                <h3>Interested in Investing?</h3>
+                <p>Leave your details and we'll send you more information about WelMac investment opportunities.</p>
+            </div>
+            <form class="wm-email-form" id="email-form">
+                <div class="wm-form-group">
+                    <label class="wm-label" for="email-name">Name</label>
+                    <input type="text" id="email-name" class="wm-input" placeholder="Your name" required>
+                </div>
+                <div class="wm-form-group">
+                    <label class="wm-label" for="email-address">Email</label>
+                    <input type="email" id="email-address" class="wm-input" placeholder="your@email.com" required>
+                </div>
+                <div class="wm-form-group">
+                    <label class="wm-label" for="email-phone">Phone (optional)</label>
+                    <input type="tel" id="email-phone" class="wm-input" placeholder="+31 6 1234 5678">
+                </div>
+                <button type="submit" class="wm-btn wm-btn-primary">Get Info</button>
+            </form>
+            <div class="wm-email-success" id="email-success">
+                Thank you for your interest! We'll be in touch soon with more information about WelMac investments.
+            </div>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="wm-disclaimer">
+            <strong>Disclaimer:</strong> This calculator provides estimates for illustrative purposes only.
+            Past performance does not guarantee future results. The projected returns are based on historical
+            data and assumptions that may not reflect actual future performance. Investment in agricultural
+            assets involves risk, including possible loss of principal. Dividend payments are not guaranteed
+            and depend on farm performance. Please consult a qualified financial advisor before making
+            investment decisions. WelMac BV certificates are traded on NPEX.
+        </div>
+    </div>
+
+    <script>
+        // ========================================
+        // Configuration
+        // ========================================
+        const CONFIG = {
+            minInvestment: 490,
+            certificateValue: 490,
+            scenarios: {
+                low: { rate: 0.066, label: 'Conservative', color: '#8b7355' },
+                medium: { rate: 0.105, label: 'Moderate', color: '#422c07' },
+                high: { rate: 0.145, label: 'Optimistic', color: '#c9a227' }
+            },
+            dividend: {
+                startYear: 4,
+                yield: 0.16,
+                growthRate: 0.02
+            },
+            defaultTimeframe: 10,
+            maxTimeframe: 15,
+            minTimeframe: 1
+        };
+
+        // ========================================
+        // State
+        // ========================================
+        const state = {
+            investment: 4900,
+            timeframe: 10,
+            scenario: 'medium',
+            reinvestDividends: true
+        };
+
+        // ========================================
+        // Chart Instances
+        // ========================================
+        let lineChart = null;
+        let barChart = null;
+
+        // ========================================
+        // Calculation Functions
+        // ========================================
+        function calculateProjection(principal, years, scenario, reinvestDividends) {
+            const rate = CONFIG.scenarios[scenario].rate;
+            const yearlyData = [];
+
+            let currentValue = principal;
+            let totalDividends = 0;
+            let accumulatedDividends = 0;
+
+            for (let year = 1; year <= years; year++) {
+                const startValue = currentValue;
+                const capitalGrowth = currentValue * rate;
+                currentValue += capitalGrowth;
+
+                let dividend = 0;
+                if (year >= CONFIG.dividend.startYear) {
+                    const yearsOfDividends = year - CONFIG.dividend.startYear;
+                    const dividendRate = CONFIG.dividend.yield *
+                        Math.pow(1 + CONFIG.dividend.growthRate, yearsOfDividends);
+                    dividend = principal * dividendRate;
+
+                    if (reinvestDividends) {
+                        currentValue += dividend;
+                    } else {
+                        accumulatedDividends += dividend;
+                    }
+                    totalDividends += dividend;
+                }
+
+                yearlyData.push({
+                    year,
+                    startValue,
+                    endValue: currentValue,
+                    capitalGrowth,
+                    dividend,
+                    totalDividends,
+                    portfolioValue: reinvestDividends ? currentValue : currentValue + accumulatedDividends
+                });
+            }
+
+            const finalValue = reinvestDividends ? currentValue : currentValue + accumulatedDividends;
+            const totalReturn = ((finalValue - principal) / principal) * 100;
+            const avgAnnualReturn = (Math.pow(finalValue / principal, 1 / years) - 1) * 100;
+
+            return {
+                yearlyData,
+                summary: {
+                    finalValue,
+                    totalReturn,
+                    totalDividends,
+                    avgAnnualReturn,
+                    principal
+                }
+            };
+        }
+
+        function compareScenarios(principal, years, reinvestDividends) {
+            return {
+                low: calculateProjection(principal, years, 'low', reinvestDividends),
+                medium: calculateProjection(principal, years, 'medium', reinvestDividends),
+                high: calculateProjection(principal, years, 'high', reinvestDividends)
+            };
+        }
+
+        // ========================================
+        // Formatting Functions
+        // ========================================
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('de-DE', {
+                style: 'currency',
+                currency: 'EUR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(value);
+        }
+
+        function formatPercent(value, decimals = 1) {
+            return \`\${value >= 0 ? '+' : ''}\${value.toFixed(decimals)}%\`;
+        }
+
+        // ========================================
+        // UI Update Functions
+        // ========================================
+        function updateSummary(projection) {
+            document.getElementById('final-value').textContent = formatCurrency(projection.summary.finalValue);
+            document.getElementById('total-return').textContent = formatPercent(projection.summary.totalReturn);
+            document.getElementById('total-dividends').textContent = formatCurrency(projection.summary.totalDividends);
+            document.getElementById('avg-annual').textContent = formatPercent(projection.summary.avgAnnualReturn);
+        }
+
+        function updateComparisonTable(scenarios) {
+            const tbody = document.getElementById('comparison-body');
+            tbody.innerHTML = '';
+
+            ['low', 'medium', 'high'].forEach(key => {
+                const scenario = scenarios[key];
+                const config = CONFIG.scenarios[key];
+                const row = document.createElement('tr');
+
+                if (key === state.scenario) {
+                    row.classList.add('active');
+                }
+
+                row.innerHTML = \`
+                    <td>\${config.label}</td>
+                    <td>\${(config.rate * 100).toFixed(1)}%</td>
+                    <td>\${formatCurrency(scenario.summary.finalValue)}</td>
+                    <td class="value-positive">\${formatPercent(scenario.summary.totalReturn)}</td>
+                    <td>\${formatCurrency(scenario.summary.totalDividends)}</td>
+                \`;
+                tbody.appendChild(row);
+            });
+        }
+
+        // ========================================
+        // Chart Functions
+        // ========================================
+        function initCharts() {
+            const lineCtx = document.getElementById('line-chart').getContext('2d');
+            const barCtx = document.getElementById('bar-chart').getContext('2d');
+
+            // Line Chart - All scenarios
+            lineChart = new Chart(lineCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Conservative (6.6%)',
+                            data: [],
+                            borderColor: CONFIG.scenarios.low.color,
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            tension: 0.3,
+                            pointRadius: 3,
+                            pointHoverRadius: 5
+                        },
+                        {
+                            label: 'Moderate (10.5%)',
+                            data: [],
+                            borderColor: CONFIG.scenarios.medium.color,
+                            backgroundColor: 'rgba(66, 44, 7, 0.1)',
+                            fill: true,
+                            borderWidth: 3,
+                            tension: 0.3,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: 'Optimistic (14.5%)',
+                            data: [],
+                            borderColor: CONFIG.scenarios.high.color,
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            tension: 0.3,
+                            pointRadius: 3,
+                            pointHoverRadius: 5
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#422c07',
+                            titleFont: { family: 'Source Sans 3', weight: '600' },
+                            bodyFont: { family: 'Source Sans 3' },
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: (ctx) => \`\${ctx.dataset.label}: \${formatCurrency(ctx.parsed.y)}\`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { family: 'Source Sans 3', size: 11 } }
+                        },
+                        y: {
+                            beginAtZero: false,
+                            grid: { color: '#e8e4df' },
+                            ticks: {
+                                font: { family: 'Inter', size: 11 },
+                                callback: (value) => formatCurrency(value)
+                            }
+                        }
+                    },
+                    interaction: { intersect: false, mode: 'index' }
+                }
+            });
+
+            // Bar Chart - Selected scenario breakdown
+            barChart = new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Capital Growth',
+                            data: [],
+                            backgroundColor: '#422c07',
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'Dividends',
+                            data: [],
+                            backgroundColor: '#c9a227',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#422c07',
+                            titleFont: { family: 'Source Sans 3', weight: '600' },
+                            bodyFont: { family: 'Source Sans 3' },
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: (ctx) => \`\${ctx.dataset.label}: \${formatCurrency(ctx.parsed.y)}\`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                            grid: { display: false },
+                            ticks: { font: { family: 'Source Sans 3', size: 11 } }
+                        },
+                        y: {
+                            stacked: true,
+                            grid: { color: '#e8e4df' },
+                            ticks: {
+                                font: { family: 'Inter', size: 11 },
+                                callback: (value) => formatCurrency(value)
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateCharts(scenarios) {
+            const years = state.timeframe;
+            const labels = Array.from({ length: years }, (_, i) => \`Year \${i + 1}\`);
+
+            // Update line chart with all scenarios
+            lineChart.data.labels = labels;
+            lineChart.data.datasets[0].data = scenarios.low.yearlyData.map(d => d.portfolioValue);
+            lineChart.data.datasets[1].data = scenarios.medium.yearlyData.map(d => d.portfolioValue);
+            lineChart.data.datasets[2].data = scenarios.high.yearlyData.map(d => d.portfolioValue);
+
+            // Highlight selected scenario
+            lineChart.data.datasets.forEach((ds, i) => {
+                const scenarioKeys = ['low', 'medium', 'high'];
+                if (scenarioKeys[i] === state.scenario) {
+                    ds.borderWidth = 3;
+                    ds.borderDash = [];
+                    ds.pointRadius = 4;
+                    ds.fill = true;
+                    ds.backgroundColor = 'rgba(66, 44, 7, 0.1)';
+                } else {
+                    ds.borderWidth = 2;
+                    ds.borderDash = [5, 5];
+                    ds.pointRadius = 3;
+                    ds.fill = false;
+                    ds.backgroundColor = 'transparent';
+                }
+            });
+
+            lineChart.update('none');
+
+            // Update bar chart with selected scenario
+            const selectedData = scenarios[state.scenario].yearlyData;
+            barChart.data.labels = labels;
+            barChart.data.datasets[0].data = selectedData.map(d => d.endValue - state.investment);
+            barChart.data.datasets[1].data = selectedData.map(d => d.totalDividends);
+            barChart.update('none');
+        }
+
+        // ========================================
+        // Main Recalculate & UI Update
+        // ========================================
+        function recalculate() {
+            const scenarios = compareScenarios(state.investment, state.timeframe, state.reinvestDividends);
+            const selectedProjection = scenarios[state.scenario];
+
+            updateSummary(selectedProjection);
+            updateComparisonTable(scenarios);
+            updateCharts(scenarios);
+        }
+
+        // ========================================
+        // Event Listeners
+        // ========================================
+        function attachEventListeners() {
+            // Investment amount
+            const investmentInput = document.getElementById('investment-input');
+            investmentInput.addEventListener('input', (e) => {
+                let value = parseInt(e.target.value) || CONFIG.minInvestment;
+                value = Math.max(CONFIG.minInvestment, value);
+                state.investment = value;
+                recalculate();
+            });
+
+            investmentInput.addEventListener('blur', (e) => {
+                if (parseInt(e.target.value) < CONFIG.minInvestment) {
+                    e.target.value = CONFIG.minInvestment;
+                    state.investment = CONFIG.minInvestment;
+                    recalculate();
+                }
+            });
+
+            // Timeframe slider
+            const timeframeSlider = document.getElementById('timeframe-slider');
+            const timeframeValue = document.getElementById('timeframe-value');
+
+            timeframeSlider.addEventListener('input', (e) => {
+                const years = parseInt(e.target.value);
+                state.timeframe = years;
+                timeframeValue.textContent = \`\${years} year\${years !== 1 ? 's' : ''}\`;
+                recalculate();
+            });
+
+            // Scenario selection
+            const scenarioOptions = document.querySelectorAll('.wm-radio-option');
+            scenarioOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    scenarioOptions.forEach(opt => opt.classList.remove('active'));
+                    option.classList.add('active');
+                    option.querySelector('input').checked = true;
+                    state.scenario = option.dataset.scenario;
+                    recalculate();
+                });
+            });
+
+            // Reinvest toggle
+            const reinvestToggle = document.getElementById('reinvest-toggle');
+            reinvestToggle.addEventListener('change', (e) => {
+                state.reinvestDividends = e.target.checked;
+                recalculate();
+            });
+
+            // Email form
+            const emailForm = document.getElementById('email-form');
+            const emailSuccess = document.getElementById('email-success');
+
+            emailForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const name = document.getElementById('email-name').value;
+                const email = document.getElementById('email-address').value;
+                const phone = document.getElementById('email-phone').value;
+
+                // Create mailto link with projection summary
+                const selectedProjection = calculateProjection(
+                    state.investment,
+                    state.timeframe,
+                    state.scenario,
+                    state.reinvestDividends
+                );
+
+                const subject = encodeURIComponent('WelMac Investment Inquiry');
+                const body = encodeURIComponent(
+                    \`Name: \${name}\\n\` +
+                    \`Email: \${email}\\n\` +
+                    \`Phone: \${phone || 'Not provided'}\\n\\n\` +
+                    \`--- Investment Projection ---\\n\` +
+                    \`Investment Amount: \${formatCurrency(state.investment)}\\n\` +
+                    \`Timeframe: \${state.timeframe} years\\n\` +
+                    \`Scenario: \${CONFIG.scenarios[state.scenario].label}\\n\` +
+                    \`Projected Final Value: \${formatCurrency(selectedProjection.summary.finalValue)}\\n\` +
+                    \`Total Return: \${formatPercent(selectedProjection.summary.totalReturn)}\\n\` +
+                    \`Dividends Reinvested: \${state.reinvestDividends ? 'Yes' : 'No'}\\n\`
+                );
+
+                // Open mailto
+                window.location.href = \`mailto:info@welmac.nl?subject=\${subject}&body=\${body}\`;
+
+                // Show success message
+                emailForm.style.display = 'none';
+                emailSuccess.classList.add('show');
+            });
+        }
+
+        // ========================================
+        // URL Parameter Handling
+        // ========================================
+        function parseUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+
+            if (params.has('investment')) {
+                const inv = parseInt(params.get('investment'));
+                if (inv >= CONFIG.minInvestment) {
+                    state.investment = inv;
+                    document.getElementById('investment-input').value = inv;
+                }
+            }
+
+            if (params.has('years')) {
+                const years = parseInt(params.get('years'));
+                if (years >= CONFIG.minTimeframe && years <= CONFIG.maxTimeframe) {
+                    state.timeframe = years;
+                    document.getElementById('timeframe-slider').value = years;
+                    document.getElementById('timeframe-value').textContent = \`\${years} year\${years !== 1 ? 's' : ''}\`;
+                }
+            }
+
+            if (params.has('scenario')) {
+                const scenario = params.get('scenario');
+                if (['low', 'medium', 'high'].includes(scenario)) {
+                    state.scenario = scenario;
+                    document.querySelectorAll('.wm-radio-option').forEach(opt => {
+                        opt.classList.toggle('active', opt.dataset.scenario === scenario);
+                        opt.querySelector('input').checked = opt.dataset.scenario === scenario;
+                    });
+                }
+            }
+
+            if (params.has('reinvest')) {
+                const reinvest = params.get('reinvest') !== 'false';
+                state.reinvestDividends = reinvest;
+                document.getElementById('reinvest-toggle').checked = reinvest;
+            }
+        }
+
+        // ========================================
+        // Initialization
+        // ========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            parseUrlParams();
+            initCharts();
+            attachEventListeners();
+            recalculate();
+        });
+    </script>
+</body>
+</html>
+`;
+
+export default {
+  async fetch(request) {
+    return new Response(HTML, {
+      headers: {
+        'Content-Type': 'text/html;charset=UTF-8',
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'public, max-age=3600',
+      },
+    });
+  },
+};
