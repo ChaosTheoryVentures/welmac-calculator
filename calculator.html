@@ -947,9 +947,7 @@
             },
             dividend: {
                 startYear: 4,
-                baseYield: 0.05,
-                maxYield: 0.16,
-                yearsToMaxYield: 12
+                yield: 0.16
             },
             defaultTimeframe: 15,
             maxTimeframe: 25,
@@ -990,12 +988,7 @@
 
                 let dividend = 0;
                 if (year >= CONFIG.dividend.startYear) {
-                    const yearsOfDividends = year - CONFIG.dividend.startYear;
-                    // Linear growth from baseYield (5%) to maxYield (16%) over yearsToMaxYield
-                    const growthProgress = Math.min(yearsOfDividends / CONFIG.dividend.yearsToMaxYield, 1);
-                    const dividendRate = CONFIG.dividend.baseYield +
-                        (CONFIG.dividend.maxYield - CONFIG.dividend.baseYield) * growthProgress;
-                    dividend = principal * dividendRate;
+                    dividend = principal * CONFIG.dividend.yield;
 
                     if (reinvestDividends) {
                         currentValue += dividend;
