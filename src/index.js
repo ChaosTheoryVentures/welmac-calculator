@@ -37,11 +37,6 @@ const HTML = `<!DOCTYPE html>
             --wm-gray-300: #d4cfc8;
             --wm-gray-500: #8b8178;
 
-            /* Scenario Colors */
-            --wm-scenario-low: #8b7355;
-            --wm-scenario-medium: #422c07;
-            --wm-scenario-high: #c9a227;
-
             /* Typography */
             --wm-font-heading: 'Kreon', Georgia, serif;
             --wm-font: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -330,97 +325,6 @@ const HTML = `<!DOCTYPE html>
         }
 
         /* ========================================
-           Radio Button Group (Scenario Selection)
-           ======================================== */
-        .wm-radio-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .wm-radio-option {
-            display: flex;
-            align-items: center;
-            padding: 12px 14px;
-            border: 2px solid var(--wm-gray-200);
-            border-radius: var(--wm-radius-md);
-            cursor: pointer;
-            transition: var(--wm-transition);
-            position: relative;
-        }
-
-        .wm-radio-option:hover {
-            border-color: var(--wm-gray-300);
-            background: var(--wm-gray-50);
-        }
-
-        .wm-radio-option input {
-            position: absolute;
-            opacity: 0;
-        }
-
-        .wm-radio-option.active {
-            border-color: var(--wm-primary);
-            background: rgba(66, 44, 7, 0.05);
-        }
-
-        .wm-radio-dot {
-            width: 18px;
-            height: 18px;
-            border: 2px solid var(--wm-gray-300);
-            border-radius: 50%;
-            margin-right: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--wm-transition);
-        }
-
-        .wm-radio-option.active .wm-radio-dot {
-            border-color: var(--wm-primary);
-        }
-
-        .wm-radio-dot::after {
-            content: '';
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--wm-primary);
-            transform: scale(0);
-            transition: var(--wm-transition);
-        }
-
-        .wm-radio-option.active .wm-radio-dot::after {
-            transform: scale(1);
-        }
-
-        .wm-radio-content {
-            flex: 1;
-        }
-
-        .wm-radio-label {
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .wm-radio-desc {
-            font-size: 0.75rem;
-            color: var(--wm-gray-500);
-        }
-
-        .wm-scenario-badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .wm-scenario-badge.low { background: var(--wm-gray-100); color: var(--wm-scenario-low); }
-        .wm-scenario-badge.medium { background: rgba(66, 44, 7, 0.1); color: var(--wm-scenario-medium); }
-        .wm-scenario-badge.high { background: rgba(201, 162, 39, 0.15); color: #8b7317; }
-
-        /* ========================================
            Toggle Switch
            ======================================== */
         .wm-toggle {
@@ -552,57 +456,6 @@ const HTML = `<!DOCTYPE html>
             width: 24px;
             height: 3px;
             border-radius: 2px;
-        }
-
-        /* ========================================
-           Comparison Table
-           ======================================== */
-        .wm-table-container {
-            overflow-x: auto;
-        }
-
-        .wm-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.875rem;
-        }
-
-        .wm-table th,
-        .wm-table td {
-            padding: 14px 16px;
-            text-align: left;
-        }
-
-        .wm-table th {
-            font-weight: 600;
-            color: var(--wm-text-light);
-            background: var(--wm-gray-50);
-            border-bottom: 2px solid var(--wm-gray-200);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .wm-table td {
-            border-bottom: 1px solid var(--wm-gray-100);
-        }
-
-        .wm-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .wm-table tr.active {
-            background: rgba(66, 44, 7, 0.05);
-        }
-
-        .wm-table tr.active td:first-child {
-            font-weight: 600;
-            color: var(--wm-primary);
-        }
-
-        .wm-table .value-positive {
-            color: var(--wm-success);
-            font-weight: 600;
         }
 
         /* ========================================
@@ -763,37 +616,11 @@ const HTML = `<!DOCTYPE html>
                     </div>
                 </div>
 
-                <!-- Scenario Selection -->
+                <!-- Rendement Info -->
                 <div class="wm-form-group">
-                    <label class="wm-label">Rendementscenario</label>
-                    <div class="wm-radio-group" id="scenario-group">
-                        <label class="wm-radio-option" data-scenario="low">
-                            <input type="radio" name="scenario" value="low">
-                            <span class="wm-radio-dot"></span>
-                            <span class="wm-radio-content">
-                                <span class="wm-radio-label">Conservatief</span>
-                                <span class="wm-radio-desc">6,6% jaarlijks rendement</span>
-                            </span>
-                            <span class="wm-scenario-badge low">Laag</span>
-                        </label>
-                        <label class="wm-radio-option active" data-scenario="medium">
-                            <input type="radio" name="scenario" value="medium" checked>
-                            <span class="wm-radio-dot"></span>
-                            <span class="wm-radio-content">
-                                <span class="wm-radio-label">Gemiddeld</span>
-                                <span class="wm-radio-desc">10,5% jaarlijks rendement</span>
-                            </span>
-                            <span class="wm-scenario-badge medium">Gemiddeld</span>
-                        </label>
-                        <label class="wm-radio-option" data-scenario="high">
-                            <input type="radio" name="scenario" value="high">
-                            <span class="wm-radio-dot"></span>
-                            <span class="wm-radio-content">
-                                <span class="wm-radio-label">Optimistisch</span>
-                                <span class="wm-radio-desc">14,5% jaarlijks rendement</span>
-                            </span>
-                            <span class="wm-scenario-badge high">Hoog</span>
-                        </label>
+                    <label class="wm-label">Verwacht Rendement</label>
+                    <div style="padding: 14px; background: rgba(66, 44, 7, 0.05); border-radius: 10px; border: 2px solid var(--wm-primary);">
+                        <span style="font-weight: 600; font-size: 1.1rem; color: var(--wm-primary);">16% jaarlijks rendement</span>
                     </div>
                 </div>
 
@@ -831,34 +658,27 @@ const HTML = `<!DOCTYPE html>
                         <div class="wm-stat-label">Gem. Jaarlijks Rendement</div>
                     </div>
                 </div>
+                <a href="#email-section" class="wm-btn wm-btn-cta" style="display: block; text-align: center; margin-top: 16px; padding: 14px 24px; background: var(--wm-gold); color: var(--wm-primary); text-decoration: none; border-radius: 10px; font-weight: 600;">Meer Informatie Aanvragen</a>
             </div>
         </div>
 
         <!-- Line Chart -->
         <div class="wm-card wm-chart-section">
-            <h3 class="wm-card-title">Investeringsgroei - Alle Scenario's</h3>
+            <h3 class="wm-card-title">Investeringsgroei (16% per jaar)</h3>
             <div class="wm-chart-wrapper">
                 <canvas id="line-chart"></canvas>
             </div>
             <div class="wm-chart-legend">
                 <div class="wm-legend-item">
-                    <span class="wm-legend-line" style="background: var(--wm-scenario-low);"></span>
-                    <span>Conservatief (6,6%)</span>
-                </div>
-                <div class="wm-legend-item">
-                    <span class="wm-legend-line" style="background: var(--wm-scenario-medium);"></span>
-                    <span>Gemiddeld (10,5%)</span>
-                </div>
-                <div class="wm-legend-item">
-                    <span class="wm-legend-line" style="background: var(--wm-scenario-high);"></span>
-                    <span>Optimistisch (14,5%)</span>
+                    <span class="wm-legend-line" style="background: var(--wm-primary);"></span>
+                    <span>Portefeuillewaarde</span>
                 </div>
             </div>
         </div>
 
         <!-- Bar Chart -->
         <div class="wm-card wm-chart-section">
-            <h3 class="wm-card-title">Jaar-voor-Jaar Overzicht (Geselecteerd Scenario)</h3>
+            <h3 class="wm-card-title">Jaar-voor-Jaar Overzicht</h3>
             <div class="wm-chart-wrapper">
                 <canvas id="bar-chart"></canvas>
             </div>
@@ -874,29 +694,8 @@ const HTML = `<!DOCTYPE html>
             </div>
         </div>
 
-        <!-- Comparison Table -->
-        <div class="wm-card wm-chart-section">
-            <h3 class="wm-card-title">Scenariovergelijking</h3>
-            <div class="wm-table-container">
-                <table class="wm-table">
-                    <thead>
-                        <tr>
-                            <th>Scenario</th>
-                            <th>Jaarlijks %</th>
-                            <th>Eindwaarde</th>
-                            <th>Totaal Rendement</th>
-                            <th>Totaal Dividend</th>
-                        </tr>
-                    </thead>
-                    <tbody id="comparison-body">
-                        <!-- Populated by JS -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
         <!-- Email Capture Section -->
-        <div class="wm-email-section">
+        <div class="wm-email-section" id="email-section">
             <div class="wm-email-header">
                 <h3>Interesse in Investeren?</h3>
                 <p>Laat uw gegevens achter en wij sturen u meer informatie over WelMac investeringsmogelijkheden.</p>
@@ -940,11 +739,7 @@ const HTML = `<!DOCTYPE html>
         const CONFIG = {
             minInvestment: 490,
             certificateValue: 490,
-            scenarios: {
-                low: { rate: 0.066, label: 'Conservatief', color: '#8b7355' },
-                medium: { rate: 0.105, label: 'Gemiddeld', color: '#422c07' },
-                high: { rate: 0.145, label: 'Optimistisch', color: '#c9a227' }
-            },
+            rate: 0.16,
             dividend: {
                 startYear: 4,
                 yield: 0.16
@@ -960,7 +755,6 @@ const HTML = `<!DOCTYPE html>
         const state = {
             investment: 4900,
             timeframe: 15,
-            scenario: 'medium',
             reinvestDividends: true
         };
 
@@ -973,8 +767,8 @@ const HTML = `<!DOCTYPE html>
         // ========================================
         // Calculation Functions
         // ========================================
-        function calculateProjection(principal, years, scenario, reinvestDividends) {
-            const rate = CONFIG.scenarios[scenario].rate;
+        function calculateProjection(principal, years, reinvestDividends) {
+            const rate = CONFIG.rate;
             const yearlyData = [];
 
             let currentValue = principal;
@@ -1025,14 +819,6 @@ const HTML = `<!DOCTYPE html>
             };
         }
 
-        function compareScenarios(principal, years, reinvestDividends) {
-            return {
-                low: calculateProjection(principal, years, 'low', reinvestDividends),
-                medium: calculateProjection(principal, years, 'medium', reinvestDividends),
-                high: calculateProjection(principal, years, 'high', reinvestDividends)
-            };
-        }
-
         // ========================================
         // Formatting Functions
         // ========================================
@@ -1059,30 +845,6 @@ const HTML = `<!DOCTYPE html>
             document.getElementById('avg-annual').textContent = formatPercent(projection.summary.avgAnnualReturn);
         }
 
-        function updateComparisonTable(scenarios) {
-            const tbody = document.getElementById('comparison-body');
-            tbody.innerHTML = '';
-
-            ['low', 'medium', 'high'].forEach(key => {
-                const scenario = scenarios[key];
-                const config = CONFIG.scenarios[key];
-                const row = document.createElement('tr');
-
-                if (key === state.scenario) {
-                    row.classList.add('active');
-                }
-
-                row.innerHTML = \`
-                    <td>\${config.label}</td>
-                    <td>\${(config.rate * 100).toFixed(1)}%</td>
-                    <td>\${formatCurrency(scenario.summary.finalValue)}</td>
-                    <td class="value-positive">\${formatPercent(scenario.summary.totalReturn)}</td>
-                    <td>\${formatCurrency(scenario.summary.totalDividends)}</td>
-                \`;
-                tbody.appendChild(row);
-            });
-        }
-
         // ========================================
         // Chart Functions
         // ========================================
@@ -1090,44 +852,22 @@ const HTML = `<!DOCTYPE html>
             const lineCtx = document.getElementById('line-chart').getContext('2d');
             const barCtx = document.getElementById('bar-chart').getContext('2d');
 
-            // Line Chart - All scenarios
+            // Line Chart - Single 16% scenario
             lineChart = new Chart(lineCtx, {
                 type: 'line',
                 data: {
                     labels: [],
                     datasets: [
                         {
-                            label: 'Conservatief (6,6%)',
+                            label: 'Portefeuillewaarde (16%)',
                             data: [],
-                            borderColor: CONFIG.scenarios.low.color,
-                            backgroundColor: 'transparent',
-                            borderWidth: 2,
-                            borderDash: [5, 5],
-                            tension: 0.3,
-                            pointRadius: 3,
-                            pointHoverRadius: 5
-                        },
-                        {
-                            label: 'Gemiddeld (10,5%)',
-                            data: [],
-                            borderColor: CONFIG.scenarios.medium.color,
+                            borderColor: '#422c07',
                             backgroundColor: 'rgba(66, 44, 7, 0.1)',
                             fill: true,
                             borderWidth: 3,
                             tension: 0.3,
                             pointRadius: 4,
                             pointHoverRadius: 6
-                        },
-                        {
-                            label: 'Optimistisch (14,5%)',
-                            data: [],
-                            borderColor: CONFIG.scenarios.high.color,
-                            backgroundColor: 'transparent',
-                            borderWidth: 2,
-                            borderDash: [5, 5],
-                            tension: 0.3,
-                            pointRadius: 3,
-                            pointHoverRadius: 5
                         }
                     ]
                 },
@@ -1156,7 +896,7 @@ const HTML = `<!DOCTYPE html>
                             beginAtZero: false,
                             grid: { color: '#e8e4df' },
                             ticks: {
-                                font: { family: 'Inter', size: 11 },
+                                font: { family: 'Source Sans 3', size: 11 },
                                 callback: (value) => formatCurrency(value)
                             }
                         }
@@ -1165,7 +905,7 @@ const HTML = `<!DOCTYPE html>
                 }
             });
 
-            // Bar Chart - Selected scenario breakdown
+            // Bar Chart - Yearly breakdown
             barChart = new Chart(barCtx, {
                 type: 'bar',
                 data: {
@@ -1211,7 +951,7 @@ const HTML = `<!DOCTYPE html>
                             stacked: true,
                             grid: { color: '#e8e4df' },
                             ticks: {
-                                font: { family: 'Inter', size: 11 },
+                                font: { family: 'Source Sans 3', size: 11 },
                                 callback: (value) => formatCurrency(value)
                             }
                         }
@@ -1220,41 +960,19 @@ const HTML = `<!DOCTYPE html>
             });
         }
 
-        function updateCharts(scenarios) {
+        function updateCharts(projection) {
             const years = state.timeframe;
             const labels = Array.from({ length: years }, (_, i) => \`Jaar \${i + 1}\`);
 
-            // Update line chart with all scenarios
+            // Update line chart
             lineChart.data.labels = labels;
-            lineChart.data.datasets[0].data = scenarios.low.yearlyData.map(d => d.portfolioValue);
-            lineChart.data.datasets[1].data = scenarios.medium.yearlyData.map(d => d.portfolioValue);
-            lineChart.data.datasets[2].data = scenarios.high.yearlyData.map(d => d.portfolioValue);
-
-            // Highlight selected scenario
-            lineChart.data.datasets.forEach((ds, i) => {
-                const scenarioKeys = ['low', 'medium', 'high'];
-                if (scenarioKeys[i] === state.scenario) {
-                    ds.borderWidth = 3;
-                    ds.borderDash = [];
-                    ds.pointRadius = 4;
-                    ds.fill = true;
-                    ds.backgroundColor = 'rgba(66, 44, 7, 0.1)';
-                } else {
-                    ds.borderWidth = 2;
-                    ds.borderDash = [5, 5];
-                    ds.pointRadius = 3;
-                    ds.fill = false;
-                    ds.backgroundColor = 'transparent';
-                }
-            });
-
+            lineChart.data.datasets[0].data = projection.yearlyData.map(d => d.portfolioValue);
             lineChart.update('none');
 
-            // Update bar chart with selected scenario
-            const selectedData = scenarios[state.scenario].yearlyData;
+            // Update bar chart
             barChart.data.labels = labels;
-            barChart.data.datasets[0].data = selectedData.map(d => d.endValue - state.investment);
-            barChart.data.datasets[1].data = selectedData.map(d => d.totalDividends);
+            barChart.data.datasets[0].data = projection.yearlyData.map(d => d.endValue - state.investment);
+            barChart.data.datasets[1].data = projection.yearlyData.map(d => d.totalDividends);
             barChart.update('none');
         }
 
@@ -1262,12 +980,9 @@ const HTML = `<!DOCTYPE html>
         // Main Recalculate & UI Update
         // ========================================
         function recalculate() {
-            const scenarios = compareScenarios(state.investment, state.timeframe, state.reinvestDividends);
-            const selectedProjection = scenarios[state.scenario];
-
-            updateSummary(selectedProjection);
-            updateComparisonTable(scenarios);
-            updateCharts(scenarios);
+            const projection = calculateProjection(state.investment, state.timeframe, state.reinvestDividends);
+            updateSummary(projection);
+            updateCharts(projection);
         }
 
         // ========================================
@@ -1302,18 +1017,6 @@ const HTML = `<!DOCTYPE html>
                 recalculate();
             });
 
-            // Scenario selection
-            const scenarioOptions = document.querySelectorAll('.wm-radio-option');
-            scenarioOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    scenarioOptions.forEach(opt => opt.classList.remove('active'));
-                    option.classList.add('active');
-                    option.querySelector('input').checked = true;
-                    state.scenario = option.dataset.scenario;
-                    recalculate();
-                });
-            });
-
             // Reinvest toggle
             const reinvestToggle = document.getElementById('reinvest-toggle');
             reinvestToggle.addEventListener('change', (e) => {
@@ -1333,10 +1036,9 @@ const HTML = `<!DOCTYPE html>
                 const phone = document.getElementById('email-phone').value;
 
                 // Create mailto link with projection summary
-                const selectedProjection = calculateProjection(
+                const projection = calculateProjection(
                     state.investment,
                     state.timeframe,
-                    state.scenario,
                     state.reinvestDividends
                 );
 
@@ -1348,9 +1050,9 @@ const HTML = `<!DOCTYPE html>
                     \`--- Investeringsprojectie ---\\n\` +
                     \`Investeringsbedrag: \${formatCurrency(state.investment)}\\n\` +
                     \`Termijn: \${state.timeframe} jaar\\n\` +
-                    \`Scenario: \${CONFIG.scenarios[state.scenario].label}\\n\` +
-                    \`Verwachte Eindwaarde: \${formatCurrency(selectedProjection.summary.finalValue)}\\n\` +
-                    \`Totaal Rendement: \${formatPercent(selectedProjection.summary.totalReturn)}\\n\` +
+                    \`Verwacht Rendement: 16% per jaar\\n\` +
+                    \`Verwachte Eindwaarde: \${formatCurrency(projection.summary.finalValue)}\\n\` +
+                    \`Totaal Rendement: \${formatPercent(projection.summary.totalReturn)}\\n\` +
                     \`Dividend Herinvesteren: \${state.reinvestDividends ? 'Ja' : 'Nee'}\\n\`
                 );
 
@@ -1383,17 +1085,6 @@ const HTML = `<!DOCTYPE html>
                     state.timeframe = years;
                     document.getElementById('timeframe-slider').value = years;
                     document.getElementById('timeframe-value').textContent = \`\${years} jaar\`;
-                }
-            }
-
-            if (params.has('scenario')) {
-                const scenario = params.get('scenario');
-                if (['low', 'medium', 'high'].includes(scenario)) {
-                    state.scenario = scenario;
-                    document.querySelectorAll('.wm-radio-option').forEach(opt => {
-                        opt.classList.toggle('active', opt.dataset.scenario === scenario);
-                        opt.querySelector('input').checked = opt.dataset.scenario === scenario;
-                    });
                 }
             }
 
